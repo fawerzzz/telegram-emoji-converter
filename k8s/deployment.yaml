@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: converter
+  labels:
+    app: converter
+  namespace: converter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: converter
+  template:
+    metadata:
+      labels:
+        app: converter
+    spec:
+      containers:
+      - name: converter
+        image: fawerzzz/telegram-converter:1.0
+        env:
+        - name: BOT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: mixed-secret
+              key: bot-token
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: mixed-secret
+              key: db-url
